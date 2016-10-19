@@ -1,22 +1,46 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ViewController, NavParams  } from 'ionic-angular';
+import { CarneModel } from '../../models/CarneModel';
 
-/*
-  Generated class for the ModalAdd page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-modal-add',
   templateUrl: 'modal-add.html'
 })
+
 export class ModalAdd {
 
-  constructor(public navCtrl: NavController) {}
+  newCarne: CarneModel = new CarneModel();
+  type:string;
+  titulo:string;
 
-  ionViewDidLoad() {
-    console.log('Hello ModalAdd Page');
+  constructor(public navCtrl: NavController, public viewCtrl:ViewController, params: NavParams) {
+     console.log('paremtro type', params.get('type'));
+     console.log('paremtro carne', params.get('carne'));
+     this.type = params.get('type');
+
+
+     if(this.type=='add'){
+      
+      this.titulo = 'Agregar';
+      this.newCarne = {
+        id:null,
+        titulo: 'Pollo',
+        descripcion: 'lorem impsu'
+      }
+
+     }else{
+       this.titulo = 'Modificar';
+       this.newCarne = params.get('carne');
+     }
+
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss({carne:null, type:null});
+  }
+
+  onSubmit(){
+    this.viewCtrl.dismiss({carne:this.newCarne, type:this.type});
   }
 
 }

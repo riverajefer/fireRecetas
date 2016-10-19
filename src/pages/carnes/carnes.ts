@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-
-import { NavController,ToastController  } from 'ionic-angular';
-
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { NavController, ToastController, ModalController  } from 'ionic-angular';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { ModalAdd } from '../modal-add/modal-add';
+import { CarneModel } from '../../models/CarneModel';
 
 @Component({
   selector: 'page-carnes',
@@ -11,44 +11,61 @@ import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'a
 
 export class Carnes {
 
-  items: FirebaseListObservable<any[]>;
+  carnes: FirebaseListObservable<CarneModel[]>;
 
-  constructor(public navCtrl: NavController, public af: AngularFire, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public af: AngularFire, public toastCtrl: ToastController, public modalCrtl: ModalController) {
 
-     this.items = this.af.database.list('/users');
+     this.carnes = this.af.database.list('/carnes');
   }
 
   add(){
-    console.log("Click");
-    this.items.push({ username: 'Jhon Doe'});
-    this.presentToast("Jhon Doe Agregado");
+    this.openModal('add',null);
+  }
+
+  openModal(type:string, carne:any){
+
+    console.log("type: ", type);
+
+    let modal = this.modalCrtl.create(ModalAdd, {type:type, carne:carne} );
+
+    modal.onDidDismiss(data =>{
+
+      if(data.type=='add'){
+        this.carnes.push(data.carne);
+        this.presentToast(data.carne.titulo + " Agregado");        
+
+      }else if(data.type=='edit'){
+        //this.carnes.update(data.carne.$key, data.carne);
+        this.carnes.update(data.carne.$key, {titulo: data.carne.titulo, descripcion:data.carne.descripcion });
+        this.presentToast(data.carne.titulo + " Modificado");           
+      }
+      else{
+        console.log("No haga nada")
+      }
+
+    });
+
+    modal.present();
+
   }
 
   update(item){
-    console.log("item: ", item);
-    console.log("key: ", item.$key);
-    let newuser = " Apellido";
-    let username = item.username;
-    this.items.update(item.$key, { username:username+newuser } );
-    this.presentToast(item.username+" Modificado");
+    this.openModal('edit', item);
   }
   
   remove(item){
-    console.log("swipe")
-    console.log("item: ", item);
-    console.log("key: ", item.$key);   
-    this.items.remove(item.$key); 
-    this.presentToast(item.username+" Eliminado");
+    this.carnes.remove(item.$key); 
+    this.presentToast(item.titulo+" Eliminado");
   }
 
   presentToast(mensaje) {
     let toast = this.toastCtrl.create({
       message: mensaje,
-      duration: 3000,
-      position: 'top'
+      duration: 2500,
+      position: 'middle',
+      showCloseButton: true
     });
     toast.present();
   }
-
 
 }

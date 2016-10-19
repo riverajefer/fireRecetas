@@ -11,17 +11,19 @@
   <h3>Lista</h3>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of items | async">
+    <ion-item-sliding *ngFor="let carne of carnes | async">
     <ion-item>
-      {{ item.username }}
+      <ion-icon name="leaf" item-left></ion-icon>
+      <h2>{{ carne.titulo }}</h2>
+      <p>{{ carne.descripcion }}</p>
     </ion-item>
 
     <ion-item-options side="right">
-      <button ion-button color="danger" (click)="update(item)">
+      <button ion-button color="danger" (click)="remove(carne)">
         <ion-icon name="md-close"></ion-icon>
         Eliminar
       </button>
-      <button ion-button color="secondary" (click)="remove(item)">
+      <button ion-button color="secondary" (click)="update(carne)">
         <ion-icon name="md-create"></ion-icon>
         Modificar
       </button>
