@@ -5,8 +5,8 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { Carnes } from '../pages/carnes/carnes';
 import { ModalAdd } from '../pages/modal-add/modal-add';
-import { CarneModel } from '../models/CarneModel';
-
+import { DetallesCarne } from '../pages/detalles-carne/detalles-carne';
+import {Mypipe} from '../pipes/mypipe';
 import { AngularFireModule, AuthMethods, AuthProviders } from 'angularfire2';
 
 
@@ -23,8 +23,9 @@ export const firebaseConfig  = {
     Page1,
     Page2,
     Carnes,
-    ModalAdd
-    //CarneModel
+    ModalAdd,
+    DetallesCarne,
+    Mypipe
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -36,8 +37,9 @@ export const firebaseConfig  = {
     Page1,
     Page2,
     Carnes,
-    ModalAdd
-    //CarneModel
+    ModalAdd,
+    DetallesCarne,
+   // Mypipe
   ],
   providers: []
 })

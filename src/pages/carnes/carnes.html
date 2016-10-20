@@ -11,8 +11,9 @@
   <h3>Lista</h3>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let carne of carnes | async">
-    <ion-item>
+
+    <ion-item-sliding *ngFor="let carne of carnes | async ">
+    <ion-item (click)="detalles(carne)">
       <ion-icon name="leaf" item-left></ion-icon>
       <h2>{{ carne.titulo }}</h2>
       <p>{{ carne.descripcion }}</p>

@@ -1,4 +1,5 @@
 export class CarneModel{
+    
     id:number;
     titulo:string;
     descripcion:string;
